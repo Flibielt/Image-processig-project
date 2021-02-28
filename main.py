@@ -1,3 +1,4 @@
+from ocr.src import Ocr
 # This is a sample Python script.
 
 # Press Shift+F10 to execute it or replace it with your code.
@@ -9,8 +10,16 @@ def print_hi(name):
     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
 
 
+def main():
+    ocr = Ocr()
+    ocr.read_image()
+    ocr.show_image()
+    ocr.save_image()
+
+
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     print_hi('PyCharm')
+    main()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
