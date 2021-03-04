@@ -1,6 +1,11 @@
 import cv2
 import os
 
+from .grayscale_converter import GrayscaleConverter
+from .util import show_image
+
+grayscale_converter = GrayscaleConverter()
+
 
 class Ocr:
     def __init__(self):
@@ -12,11 +17,13 @@ class Ocr:
         return self.image
 
     def show_image(self):
-        cv2.imshow("Text", self.image)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        show_image(self.image, "Text")
 
     def save_image(self):
         home_dir = os.path.expanduser("~")
         file_path = os.path.join(home_dir, "Documents", "savedText.png")
         cv2.imwrite(file_path, self.image)
+
+    def process_image(self):
+        processed_image = grayscale_converter.process_image(self.image)
+        show_image(processed_image, "Processed image")

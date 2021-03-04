@@ -12,13 +12,9 @@ def print_hi(name):
 
 def main():
     ocr = Ocr()
-    grayscale_converter = GrayscaleConverter()
-    image = ocr.read_image()
-    ocr.show_image()
+    ocr.read_image()
     ocr.save_image()
-
-    grayscale_converter.image = image
-    grayscale_converter.to_gray_scale()
+    ocr.process_image()
 
 
 # Press the green button in the gutter to run the script.
