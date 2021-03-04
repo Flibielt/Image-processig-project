@@ -21,7 +21,7 @@ class GrayscaleConverter:
     def to_gray_scale(self):
         gray_trans = np.array([[[0.07, 0.72, 0.21]]])
         gray_image = cv2.convertScaleAbs(np.sum(self.image * gray_trans, axis=2))
-        show_image(gray_image, "Gray")
+        show_image("Gray", gray_image)
 
         return gray_image
 

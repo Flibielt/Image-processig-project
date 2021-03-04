@@ -2,9 +2,11 @@ import cv2
 import os
 
 from .grayscale_converter import GrayscaleConverter
+from .image_filter import ImageFilter
 from .util import show_image
 
 grayscale_converter = GrayscaleConverter()
+image_filter = ImageFilter()
 
 
 class Ocr:
@@ -17,7 +19,7 @@ class Ocr:
         return self.image
 
     def show_image(self):
-        show_image(self.image, "Text")
+        show_image("Text", self.image)
 
     def save_image(self):
         home_dir = os.path.expanduser("~")
@@ -25,5 +27,13 @@ class Ocr:
         cv2.imwrite(file_path, self.image)
 
     def process_image(self):
-        processed_image = grayscale_converter.process_image(self.image)
-        show_image(processed_image, "Processed image")
+        grayscale_image = grayscale_converter.process_image(self.image)
+        # show_image("Grayscale image", grayscale_image)
+
+        filtered_image = image_filter.filter_image(grayscale_image)
+        # show_image("Filtered image", filtered_image)
+
+        cv2.imshow("Grayscale", grayscale_image)
+        cv2.imshow("Filtered", filtered_image)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
