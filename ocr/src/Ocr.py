@@ -7,7 +7,7 @@ class Ocr:
         self.image = None
 
     def read_image(self):
-        self.image = cv2.imread("data/bmw-328-roadster-02.jpg", cv2.IMREAD_COLOR)
+        self.image = cv2.imread("data/text.png", cv2.IMREAD_COLOR)
 
         return self.image
 
