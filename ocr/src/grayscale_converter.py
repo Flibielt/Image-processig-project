@@ -56,6 +56,3 @@ class GrayscaleConverter:
                 break
 
         return self.gray_levels[index]
-
-
-
