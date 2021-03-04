@@ -1,4 +1,4 @@
-from ocr.src import Ocr
+from ocr.src import Ocr, GrayscaleConverter
 # This is a sample Python script.
 
 # Press Shift+F10 to execute it or replace it with your code.
@@ -12,9 +12,13 @@ def print_hi(name):
 
 def main():
     ocr = Ocr()
-    ocr.read_image()
+    grayscale_converter = GrayscaleConverter()
+    image = ocr.read_image()
     ocr.show_image()
     ocr.save_image()
+
+    grayscale_converter.image = image
+    grayscale_converter.to_gray_scale()
 
 
 # Press the green button in the gutter to run the script.
