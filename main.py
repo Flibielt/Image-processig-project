@@ -5,7 +5,7 @@ def main():
     ocr = Ocr()
     ocr.read_image()
     ocr.save_image()
-    ocr.process_image()
+    ocr.preprocess_image()
 
 
 if __name__ == '__main__':

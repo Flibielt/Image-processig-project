@@ -26,7 +26,7 @@ class Ocr:
         file_path = os.path.join(home_dir, "Documents", "savedText.png")
         cv2.imwrite(file_path, self.image)
 
-    def process_image(self):
+    def preprocess_image(self):
         grayscale_image = grayscale_converter.process_image(self.image)
         # show_image("Grayscale image", grayscale_image)
 
