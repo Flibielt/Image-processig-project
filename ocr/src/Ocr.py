@@ -2,11 +2,13 @@ import cv2
 import os
 
 from .grayscale_converter import GrayscaleConverter
+from .word_detector import WordDetector
 from .image_filter import ImageFilter
 from .util import show_image
 
 grayscale_converter = GrayscaleConverter()
 image_filter = ImageFilter()
+word_detector = WordDetector()
 
 
 class Ocr:
@@ -37,3 +39,5 @@ class Ocr:
         cv2.imshow("Filtered", filtered_image)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
+
+        word_detector.detect_words(filtered_image)
