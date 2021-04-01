@@ -1,6 +1,7 @@
-from matplotlib import pyplot as plt
 import numpy as np
 import cv2
+
+from .word import Word
 
 
 def get_word_borders(histogram, threshold):
@@ -82,13 +83,9 @@ class WordDetector:
         """
 
         words = []
-        for row in range(0, len(rows), 2):
+        for row_index in range(0, len(rows), 2):
             width = self.image.shape[1]
-            image_row = self.image[rows[row]:rows[row + 1], 0:width]
-
-            cv2.imshow("row", image_row)
-            cv2.waitKey(0)
-            cv2.destroyAllWindows()
+            image_row = self.image[rows[row_index]:rows[row_index + 1], 0:width]
 
             row_height = image_row.shape[0]
 
@@ -96,13 +93,15 @@ class WordDetector:
 
             columns = get_word_borders(vertical_hist, 3)
 
-            plt.plot(vertical_hist)
-            plt.show()
+            for col_index in range(0, len(columns), 2):
+                word = Word()
+                word.image = image_row[0:row_height, columns[col_index]:columns[col_index + 1]]
+                word.y = rows[row_index]
+                word.x = columns[col_index]
+                words.append(word)
 
-            for index in range(0, len(columns), 2):
-                words.append(image_row[0:row_height, columns[index]:columns[index + 1]])
-
-        cv2.imshow("first", words[0])
+        cv2.imshow("first", words[10].image)
+        print("x: " + str(words[10].x) + ", y: " + str(words[0].y))
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
