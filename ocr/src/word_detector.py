@@ -68,8 +68,8 @@ class WordDetector:
 
         horizontal_hist = calculate_horizontal_histogram(self.image)
 
-        plt.plot(horizontal_hist)
-        plt.show()
+        # plt.plot(horizontal_hist)
+        # plt.show()
 
         return get_word_borders(horizontal_hist, 40)
 

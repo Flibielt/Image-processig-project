@@ -35,9 +35,4 @@ class Ocr:
         filtered_image = image_filter.filter_image(grayscale_image)
         # show_image("Filtered image", filtered_image)
 
-        cv2.imshow("Grayscale", grayscale_image)
-        cv2.imshow("Filtered", filtered_image)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-
         word_detector.detect_words(filtered_image)
