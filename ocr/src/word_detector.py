@@ -96,11 +96,12 @@ class WordDetector:
             for col_index in range(0, len(columns), 2):
                 word = Word()
                 word.image = image_row[0:row_height, columns[col_index]:columns[col_index + 1]]
+                word.resized_image = cv2.resize(word.image, (64, 64))
                 word.y = rows[row_index]
                 word.x = columns[col_index]
                 words.append(word)
 
-        cv2.imshow("first", words[10].image)
+        cv2.imshow("first", words[10].resized_image)
         print("x: " + str(words[10].x) + ", y: " + str(words[0].y))
         cv2.waitKey(0)
         cv2.destroyAllWindows()
