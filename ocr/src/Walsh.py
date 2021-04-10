@@ -3,6 +3,19 @@ import math
 import numpy as np
 
 
+class Walsh:
+    def __init__(self, n):
+        self.walsh_matrix = generate_walsh(n, n)
+        self.walsh_size = n
+
+    def generate_feature_vector(self, image):
+        feature_vector = np.sum(np.multiply(image, self.walsh_matrix[:1].reshape(64, 64)))
+
+        for i in range(1, self.walsh_size):
+            feature_vector = np.append(feature_vector,
+                                       np.sum(np.multiply(image, self.walsh_matrix[i:i + 1].reshape(64, 64))))
+
+
 def generate_walsh(n, count):
     if n < count:
         print("count must be lower or equal with n")
