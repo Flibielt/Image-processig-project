@@ -1,2 +1,2 @@
-from .Ocr import Ocr
+from .ocr import Ocr
 from .grayscale_converter import GrayscaleConverter
