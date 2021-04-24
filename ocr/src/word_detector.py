@@ -57,7 +57,9 @@ class WordDetector:
         self.image = image
 
         rows = self.get_horizontal_lines()
-        self.get_cols(rows)
+        words = self.get_cols(rows)
+
+        return words
 
     def get_horizontal_lines(self):
         """
