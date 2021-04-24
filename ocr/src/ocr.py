@@ -5,10 +5,12 @@ import cv2
 from .grayscale_converter import GrayscaleConverter
 from .image_filter import ImageFilter
 from .word_detector import WordDetector
+from .word_recognition import WordRecognizing
 
 grayscale_converter = GrayscaleConverter()
 image_filter = ImageFilter()
 word_detector = WordDetector()
+word_recognizing = WordRecognizing()
 
 
 class Ocr:
@@ -36,6 +38,8 @@ class Ocr:
 
         filtered_image = self.preprocess_image()
 
-        word_detector.detect_words(filtered_image)
+        words = word_detector.detect_words(filtered_image)
 
-        return "Patience"
+        text = word_recognizing.recognize_words(words)
+
+        return text
