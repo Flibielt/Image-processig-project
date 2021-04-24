@@ -5,7 +5,9 @@ from .etalon import Etalon
 
 def calculate_distance(word, etalon):
     distance = 0
-    # todo: Calculate distance
+
+    for i in range(0, len(word)):
+        distance = distance + abs(word[i] - etalon[i])
 
     return distance
 
