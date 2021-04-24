@@ -1,10 +1,10 @@
-import cv2
 import os
 
+import cv2
+
 from .grayscale_converter import GrayscaleConverter
-from .word_detector import WordDetector
 from .image_filter import ImageFilter
-from .util import show_image
+from .word_detector import WordDetector
 
 grayscale_converter = GrayscaleConverter()
 image_filter = ImageFilter()
@@ -14,14 +14,6 @@ word_detector = WordDetector()
 class Ocr:
     def __init__(self):
         self.image = None
-
-    def read_image(self):
-        self.image = cv2.imread("data/text.png", cv2.IMREAD_COLOR)
-
-        return self.image
-
-    def show_image(self):
-        show_image("Text", self.image)
 
     def save_image(self):
         home_dir = os.path.expanduser("~")
@@ -35,4 +27,15 @@ class Ocr:
         filtered_image = image_filter.filter_image(grayscale_image)
         # show_image("Filtered image", filtered_image)
 
+        return filtered_image
+
+    def process_image(self, image_name):
+        print("Processing image...")
+        self.image = cv2.imread(image_name, cv2.IMREAD_COLOR)
+        self.save_image()
+
+        filtered_image = self.preprocess_image()
+
         word_detector.detect_words(filtered_image)
+
+        return "Patience"

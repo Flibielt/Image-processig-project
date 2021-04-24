@@ -3,9 +3,8 @@ from ocr.src import Ocr
 
 def main():
     ocr = Ocr()
-    ocr.read_image()
-    ocr.save_image()
-    ocr.preprocess_image()
+    text = ocr.process_image("data/text.png")
+    print(text)
 
 
 if __name__ == '__main__':
