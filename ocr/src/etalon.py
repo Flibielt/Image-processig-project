@@ -40,7 +40,8 @@ class Etalon:
             print("Please give the character which can be seen on the images.")
             for i in range(0, len(self.etalon_matrix)):
                 cv2.imshow("Word", self.etalon_matrix[i].resized_image)
-                # todo: Handle user input
+                character = input("The character: ")
+                self.etalon_matrix[i].text = character
         for i in range(0, len(self.etalon_matrix)):
             if i < len(ETALON_TEXT):
                 self.etalon_matrix[i].text = ETALON_TEXT[i]
