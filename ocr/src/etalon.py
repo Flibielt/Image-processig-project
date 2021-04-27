@@ -1,11 +1,15 @@
 import cv2
 import string
 import configparser
-from .word_detector import WordDetector
 
-ETALON_IMAGE = "data/etalon.png"
+from .word_detector import WordDetector
+from .grayscale_converter import GrayscaleConverter
+
+ETALON_IMAGE_PATH = "data/etalon.png"
 word_detector = WordDetector()
 USER_INPUT = False
+
+grayscale_converter = GrayscaleConverter()
 
 config = configparser.ConfigParser()
 config.read('ocr.ini')
@@ -34,7 +38,9 @@ class Etalon:
         self.etalon_text = create_etalon_text()
 
     def create_etalon_matrix(self):
-        self.etalon_matrix = word_detector.detect_words(ETALON_IMAGE)
+        etalon_image = cv2.imread(ETALON_IMAGE_PATH, cv2.IMREAD_COLOR)
+        etalon_image_grayscale = grayscale_converter.process_image(etalon_image)
+        self.etalon_matrix = word_detector.detect_words(etalon_image_grayscale)
 
         if USER_INPUT:
             print("Please give the character which can be seen on the images.")
