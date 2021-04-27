@@ -15,6 +15,7 @@ def calculate_distance(word, etalon):
 class WordRecognizing:
     def __init__(self):
         self.etalon = Etalon()
+        self.etalon.create_etalon_matrix()
 
     def recognize_words(self, words):
         etalon_matrix = self.etalon.etalon_matrix
@@ -24,7 +25,7 @@ class WordRecognizing:
             min_distance = sys.maxsize
             min_position = 0
 
-            for i in range(0, etalon_matrix):
+            for i in range(0, len(etalon_matrix)):
                 distance = calculate_distance(word.feature_vector, etalon_matrix[i].feature_vector)
 
                 if distance < min_distance:
