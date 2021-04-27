@@ -3,8 +3,10 @@ import cv2
 from matplotlib import pyplot as plt
 
 from .word import Word
+from .Walsh import Walsh
 
 SHOW_HISTOGRAMS = True
+walsh = Walsh(64)
 
 
 def get_word_borders(histogram):
@@ -110,6 +112,7 @@ class WordDetector:
                 word.resized_image = cv2.resize(word.image, (64, 64))
                 word.y = rows[row_index]
                 word.x = columns[col_index]
+                word.feature_vector = walsh.generate_feature_vector(word.resized_image)
                 words.append(word)
 
         cv2.imshow("first", words[6].resized_image)
