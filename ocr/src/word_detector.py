@@ -1,10 +1,14 @@
 import numpy as np
 import cv2
+from matplotlib import pyplot as plt
 
 from .word import Word
 
+SHOW_HISTOGRAMS = True
 
-def get_word_borders(histogram, threshold):
+
+def get_word_borders(histogram):
+    threshold = max(histogram) / 20
     border = []
 
     word = False
@@ -71,10 +75,11 @@ class WordDetector:
 
         horizontal_hist = calculate_horizontal_histogram(self.image)
 
-        # plt.plot(horizontal_hist)
-        # plt.show()
+        if SHOW_HISTOGRAMS:
+            plt.plot(horizontal_hist)
+            plt.show()
 
-        return get_word_borders(horizontal_hist, 40)
+        return get_word_borders(horizontal_hist)
 
     def get_cols(self, rows):
         """
@@ -93,7 +98,11 @@ class WordDetector:
 
             vertical_hist = calculate_vertical_histogram(image_row)
 
-            columns = get_word_borders(vertical_hist, 3)
+            if SHOW_HISTOGRAMS:
+                plt.plot(vertical_hist)
+                plt.show()
+
+            columns = get_word_borders(vertical_hist)
 
             for col_index in range(0, len(columns), 2):
                 word = Word()
@@ -103,7 +112,7 @@ class WordDetector:
                 word.x = columns[col_index]
                 words.append(word)
 
-        cv2.imshow("first", words[10].resized_image)
+        cv2.imshow("first", words[6].resized_image)
         print("x: " + str(words[10].x) + ", y: " + str(words[0].y))
         cv2.waitKey(0)
         cv2.destroyAllWindows()
