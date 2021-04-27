@@ -15,6 +15,8 @@ class Walsh:
             feature_vector = np.append(feature_vector,
                                        np.sum(np.multiply(image, self.walsh_matrix[i:i + 1].reshape(64, 64))))
 
+        return feature_vector
+
 
 def generate_walsh(n, count):
     if n < count:
