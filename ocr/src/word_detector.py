@@ -6,7 +6,7 @@ from .word import Word
 from .Walsh import Walsh
 
 SHOW_HISTOGRAMS = True
-walsh = Walsh(64)
+walsh = Walsh()
 
 
 def get_word_borders(histogram):
