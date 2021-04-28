@@ -1,6 +1,5 @@
 import math
 
-import cv2
 import numpy as np
 
 
@@ -9,11 +8,12 @@ class Walsh:
         self.hadamard_matrix = generate_hadamard_matrix()
 
     def generate_feature_vector(self, image):
-        feature_vector = np.sum(np.multiply(image, self.hadamard_matrix[:1].reshape(64, 64)))
+        walsh_matrix = self.get_walsh_matrix(0)
+        feature_vector = np.sum(np.multiply(image, walsh_matrix))
 
         for i in range(1, 8):
-            feature_vector = np.append(feature_vector,
-                                       np.sum(np.multiply(image, self.hadamard_matrix[i:i + 1].reshape(64, 64))))
+            walsh_matrix = self.get_walsh_matrix(i)
+            feature_vector = np.append(feature_vector, np.sum(np.multiply(image, walsh_matrix)))
 
         return feature_vector
 
@@ -29,11 +29,6 @@ class Walsh:
                     resized_walsh_matrix[x, y] = -1
                 else:
                     resized_walsh_matrix[x, y] = 1
-
-        name = "walsh " + str(n + 1)
-        img = resized_walsh_matrix.astype(np.uint8)
-        cv2.imshow(name, img)
-        cv2.waitKey(0)
 
         return resized_walsh_matrix.reshape(64, 64)
 
