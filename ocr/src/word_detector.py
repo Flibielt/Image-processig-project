@@ -4,8 +4,9 @@ from matplotlib import pyplot as plt
 
 from .word import Word
 from .Walsh import Walsh
+from .config import get_config
 
-SHOW_HISTOGRAMS = True
+SHOW_HISTOGRAMS = get_config("DEBUG", "Plot") == "YES"
 walsh = Walsh()
 
 
