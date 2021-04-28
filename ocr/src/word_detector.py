@@ -56,6 +56,43 @@ def calculate_vertical_histogram(image):
     return histogram
 
 
+def cut_image(image):
+    """Cut the unnecessary parts of."""
+    height = len(image[0])
+    width = len(image)
+
+    top = 0
+    bottom = height
+    left = 0
+    right = width
+    if min(image[:, 0]) > 250:
+        for y in range(0, height):
+            if min(image[:, y]) < 250:
+                top = y - 1
+                break
+
+    if min(image[:, height - 1]) > 250:
+        for y in range(height - 1, 0, -1):
+            if min(image[:, y]) < 250:
+                bottom = y + 1
+                break
+
+    if min(image[0, :]) > 250:
+        for x in range(0, width):
+            if min(image[x, :]) < 250:
+                left = x - 1
+                break
+
+    if min(image[width - 1, :]) > 250:
+        for x in range(width - 1, 0, -1):
+            if min(image[x, :]) < 250:
+                right = x + 1
+                break
+
+    image_cut = image[top: bottom, left: right]
+    return image_cut
+
+
 class WordDetector:
     def __init__(self):
         self.image = None
@@ -109,7 +146,8 @@ class WordDetector:
 
             for col_index in range(0, len(columns), 2):
                 word = Word()
-                word.image = image_row[0:row_height, columns[col_index]:columns[col_index + 1]]
+                image = image_row[0:row_height, columns[col_index]:columns[col_index + 1]]
+                word.image = image
                 word.resized_image = cv2.resize(word.image, (64, 64))
                 word.y = rows[row_index]
                 word.x = columns[col_index]
