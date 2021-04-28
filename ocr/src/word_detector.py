@@ -11,7 +11,7 @@ walsh = Walsh()
 
 
 def get_word_borders(histogram):
-    threshold = max(histogram) / 20
+    threshold = max(histogram) / 25
     border = []
 
     word = False
@@ -58,8 +58,8 @@ def calculate_vertical_histogram(image):
 
 def cut_image(image):
     """Cut the unnecessary parts of."""
-    height = len(image[0])
-    width = len(image)
+    height = len(image)
+    width = len(image[0])
 
     top = 0
     bottom = height
@@ -154,8 +154,17 @@ class WordDetector:
                 word.feature_vector = walsh.generate_feature_vector(word.resized_image)
                 words.append(word)
 
-        cv2.imshow("first", words[6].resized_image)
-        print("x: " + str(words[10].x) + ", y: " + str(words[0].y))
+        image_with_rectangles = self.image
+        for i in range(0, len(words)):
+            height = len(words[i].image)
+            width = len(words[i].image[0])
+            start_point = (words[i].x, words[i].y)
+            end_point = (words[i].x + width, words[i].y + height)
+
+            color = (0, 255, 0)
+            thickness = 2
+            image_with_rectangles = cv2.rectangle(image_with_rectangles, start_point, end_point, color, thickness)
+        cv2.imshow("Words", image_with_rectangles)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
