@@ -1,23 +1,15 @@
 import cv2
 import string
-import configparser
 
 from .word_detector import WordDetector
 from .grayscale_converter import GrayscaleConverter
+from .config import get_config
 
 ETALON_IMAGE_PATH = "data/etalon.png"
 word_detector = WordDetector()
-USER_INPUT = False
+USER_INPUT = get_config("ETALON", "UserInput") == "YES"
 
 grayscale_converter = GrayscaleConverter()
-
-config = configparser.ConfigParser()
-config.read('ocr.ini')
-try:
-    value = config["ETALON"]["UserInput"]
-    USER_INPUT = value == "YES"
-except:
-    USER_INPUT = False
 
 
 def create_etalon_text():
