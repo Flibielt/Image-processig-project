@@ -93,6 +93,34 @@ def cut_image(image):
     return image_cut
 
 
+def get_average_word_width(words):
+    widths = 0
+
+    for word in words:
+        widths = widths + len(word.image[0])
+
+    return widths / len(words)
+
+
+def calculate_distance_between_previous(words, index):
+    previous_image_len = len(words[index - 1].image[0])
+    previous = words[index - 1].x + previous_image_len
+
+    return words[index].y - previous
+
+
+def new_space(x, y, average_width):
+    word = Word()
+    word.image = np.zeros((int(average_width), int(average_width)))
+    word.resized_image = np.zeros((64, 64))
+    word.feature_vector = np.zeros(8)
+    word.text = " "
+    word.x = x
+    word.y = y
+
+    return word
+
+
 class WordDetector:
     def __init__(self):
         self.image = None
@@ -102,6 +130,15 @@ class WordDetector:
 
         rows = self.get_horizontal_lines()
         words = self.get_cols(rows)
+
+        average_width = get_average_word_width(words)
+        for i in range(1, len(words) - 1):
+            if words[i].text == " ":
+                continue
+            elif words[i - 1].y != words[i].y:
+                words.insert(i, new_space(words[i].x - average_width, words[i].y, average_width))
+            elif calculate_distance_between_previous(words, i) > average_width:
+                words.insert(i, new_space(words[i].x - average_width, words[i].y, average_width))
 
         return words
 
