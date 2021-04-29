@@ -11,7 +11,7 @@ walsh = Walsh()
 
 
 def get_word_borders(histogram):
-    threshold = max(histogram) / 25
+    threshold = max(histogram) / 45
     border = []
 
     word = False
@@ -56,38 +56,35 @@ def calculate_vertical_histogram(image):
     return histogram
 
 
+def get_detected_word_border(histogram):
+    threshold = max(histogram) / 45
+    border = []
+
+    for i in range(0, len(histogram)):
+        if (histogram[i] > threshold):
+            border.append(i)
+            break
+
+    for i in range(len(histogram) - 1, 0, -1):
+        if (histogram[i] > threshold):
+            border.append(i)
+            break
+
+    return border
+
+
 def cut_image(image):
     """Cut the unnecessary parts of."""
-    height = len(image)
-    width = len(image[0])
+    vertical_hist = calculate_vertical_histogram(image)
+    horizontal_hist = calculate_horizontal_histogram(image)
 
-    top = 0
-    bottom = height
-    left = 0
-    right = width
-    if min(image[:, 0]) > 250:
-        for y in range(0, height):
-            if min(image[:, y]) < 250:
-                top = y - 1
-                break
+    vertical_border = get_detected_word_border(vertical_hist)
+    left = vertical_border[0]
+    right = vertical_border[1]
 
-    if min(image[:, height - 1]) > 250:
-        for y in range(height - 1, 0, -1):
-            if min(image[:, y]) < 250:
-                bottom = y + 1
-                break
-
-    if min(image[0, :]) > 250:
-        for x in range(0, width):
-            if min(image[x, :]) < 250:
-                left = x - 1
-                break
-
-    if min(image[width - 1, :]) > 250:
-        for x in range(width - 1, 0, -1):
-            if min(image[x, :]) < 250:
-                right = x + 1
-                break
+    horizontal_border = get_detected_word_border(horizontal_hist)
+    top = horizontal_border[0]
+    bottom = horizontal_border[1]
 
     image_cut = image[top: bottom, left: right]
     return image_cut
@@ -152,8 +149,9 @@ class WordDetector:
             for col_index in range(0, columns_length, 2):
                 word = Word()
                 image = image_row[0:row_height, columns[col_index]:columns[col_index + 1]]
+                min_image = cut_image(image)
                 word.image = image
-                word.resized_image = cv2.resize(word.image, (64, 64))
+                word.resized_image = cv2.resize(min_image, (64, 64))
                 word.y = rows[row_index]
                 word.x = columns[col_index]
                 word.feature_vector = walsh.generate_feature_vector(word.resized_image)
