@@ -10,6 +10,13 @@ SHOW_HISTOGRAMS = get_config("DEBUG", "Plot") == "YES"
 walsh = Walsh()
 
 
+class WordCut:
+    def __init__(self):
+        self.image = None
+        self.x = 0
+        self.y = 0
+
+
 def get_word_borders(histogram):
     threshold = max(histogram) / 45
     border = []
@@ -73,7 +80,7 @@ def get_detected_word_border(histogram):
     return border
 
 
-def cut_image(image):
+def cut_image(image, orig_x, orig_y):
     """Cut the unnecessary parts of."""
     vertical_hist = calculate_vertical_histogram(image)
     horizontal_hist = calculate_horizontal_histogram(image)
@@ -87,7 +94,11 @@ def cut_image(image):
     bottom = horizontal_border[1]
 
     image_cut = image[top: bottom, left: right]
-    return image_cut
+    word_cut = WordCut()
+    word_cut.image = image_cut
+    word_cut.x = orig_x + left
+    word_cut.y = orig_y + top
+    return word_cut
 
 
 class WordDetector:
@@ -149,11 +160,11 @@ class WordDetector:
             for col_index in range(0, columns_length, 2):
                 word = Word()
                 image = image_row[0:row_height, columns[col_index]:columns[col_index + 1]]
-                min_image = cut_image(image)
-                word.image = image
-                word.resized_image = cv2.resize(min_image, (64, 64))
-                word.y = rows[row_index]
-                word.x = columns[col_index]
+                min_image = cut_image(image, columns[col_index], rows[row_index])
+                word.image = min_image.image
+                word.resized_image = cv2.resize(min_image.image, (64, 64))
+                word.y = min_image.y
+                word.x = min_image.x
                 word.feature_vector = walsh.generate_feature_vector(word.resized_image)
                 words.append(word)
 
