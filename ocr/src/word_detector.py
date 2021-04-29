@@ -132,7 +132,11 @@ class WordDetector:
         words = []
         for row_index in range(0, len(rows), 2):
             width = self.image.shape[1]
-            image_row = self.image[rows[row_index]:rows[row_index + 1], 0:width]
+            if len(rows) == 1:
+                height = self.image.shape[0]
+                image_row = self.image[rows[row_index]:height, 0:width]
+            else:
+                image_row = self.image[rows[row_index]:rows[row_index + 1], 0:width]
 
             row_height = image_row.shape[0]
 
@@ -144,7 +148,8 @@ class WordDetector:
 
             columns = get_word_borders(vertical_hist)
 
-            for col_index in range(0, len(columns), 2):
+            columns_length = len(columns) - len(columns) % 2
+            for col_index in range(0, columns_length, 2):
                 word = Word()
                 image = image_row[0:row_height, columns[col_index]:columns[col_index + 1]]
                 word.image = image
