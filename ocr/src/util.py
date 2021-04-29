@@ -1,6 +1,6 @@
 import cv2
 
-THRESHOLD = 10
+THRESHOLD = 3
 
 
 def show_image(text, image):
