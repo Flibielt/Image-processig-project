@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 from .word import Word
 from .Walsh import Walsh
 from .config import get_config
+from .util import save_image
 
 SHOW_HISTOGRAMS = get_config("DEBUG", "Plot") == "YES"
 walsh = Walsh()
@@ -160,7 +161,13 @@ class WordDetector:
             for col_index in range(0, columns_length, 2):
                 word = Word()
                 image = image_row[0:row_height, columns[col_index]:columns[col_index + 1]]
-                min_image = cut_image(image, columns[col_index], rows[row_index])
+                try:
+                    min_image = cut_image(image, columns[col_index], rows[row_index])
+
+                    if min_image.image.shape[0] == 0 or min_image.image.shape[1] == 0:
+                        continue
+                except:
+                    continue
                 word.image = min_image.image
                 word.resized_image = cv2.resize(min_image.image, (64, 64))
                 word.y = min_image.y
@@ -181,5 +188,7 @@ class WordDetector:
         cv2.imshow("Words", image_with_rectangles)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
+
+        save_image("detectedWords", image_with_rectangles)
 
         return words
