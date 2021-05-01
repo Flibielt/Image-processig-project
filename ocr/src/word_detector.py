@@ -65,7 +65,7 @@ def calculate_vertical_histogram(image):
 
 
 def get_detected_word_border(histogram):
-    threshold = max(histogram) / 45
+    threshold = max(histogram) * 0.001
     border = []
 
     for i in range(0, len(histogram)):
@@ -102,11 +102,44 @@ def cut_image(image, orig_x, orig_y):
     return word_cut
 
 
+def create_space(x, y, width):
+    """Creates word with space"""
+    word = Word()
+    word.text = " "
+    word.image = np.zeros((int(width), int(width)), np.uint8)
+    word.x = x
+    word.y = y
+
+    return word
+
+
+def calculate_average_word_length(words):
+    sum_width = 0
+    for word in words:
+        sum_width = sum_width + len(word.image[0])
+
+    return sum_width / len(words)
+
+
 class WordDetector:
     def __init__(self):
         self.image = None
 
     def detect_words(self, image):
+        self.image = image
+
+        rows = self.get_horizontal_lines()
+        words = self.get_cols(rows)
+        average_width = calculate_average_word_length(words)
+
+        for i in range(1, len(words)):
+            distance = abs(words[i].x - (words[i - 1].x + len(words[i - 1].image[0])))
+            if distance > average_width and words[i - 1].text != " ":
+                words.insert(i, create_space(words[i - 1].x, words[i - 1].y, average_width))
+
+        return words
+
+    def detect_etalon_words(self, image):
         self.image = image
 
         rows = self.get_horizontal_lines()
