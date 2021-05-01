@@ -1,12 +1,12 @@
 import cv2
 import string
 
-from .word_detector import WordDetector
+from .character_detector import CharacterDetector
 from .grayscale_converter import GrayscaleConverter
 from .config import get_config
 
 ETALON_IMAGE_PATH = "data/etalon.png"
-word_detector = WordDetector()
+word_detector = CharacterDetector()
 USER_INPUT = get_config("ETALON", "UserInput") == "YES"
 
 grayscale_converter = GrayscaleConverter()
@@ -32,7 +32,7 @@ class Etalon:
     def create_etalon_matrix(self):
         etalon_image = cv2.imread(ETALON_IMAGE_PATH, cv2.IMREAD_COLOR)
         etalon_image_grayscale = grayscale_converter.process_image(etalon_image)
-        self.etalon_matrix = word_detector.detect_etalon_words(etalon_image_grayscale)
+        self.etalon_matrix = word_detector.detect_etalon_characters(etalon_image_grayscale)
 
         if USER_INPUT:
             print("Please give the character which can be seen on the images.")

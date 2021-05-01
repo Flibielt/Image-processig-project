@@ -1,4 +1,4 @@
-class Word:
+class Character:
     def __init__(self):
         self.image = None
         self.resized_image = None

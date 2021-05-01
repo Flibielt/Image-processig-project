@@ -1,17 +1,15 @@
-import os
-
 import cv2
 
+from .character_detector import CharacterDetector
 from .grayscale_converter import GrayscaleConverter
 from .image_filter import ImageFilter
 from .util import show_image, save_image
-from .word_detector import WordDetector
-from .word_recognition import WordRecognizing
+from .character_recognition import CharacterRecognizing
 
 grayscale_converter = GrayscaleConverter()
 image_filter = ImageFilter()
-word_detector = WordDetector()
-word_recognizing = WordRecognizing()
+character_detector = CharacterDetector()
+character_recognizing = CharacterRecognizing()
 
 
 class Ocr:
@@ -34,8 +32,8 @@ class Ocr:
 
         filtered_image = self.preprocess_image()
 
-        words = word_detector.detect_words(filtered_image)
+        characters = character_detector.detect_characters(filtered_image)
 
-        text = word_recognizing.recognize_words(words)
+        text = character_recognizing.recognize_characters(characters)
 
         return text
