@@ -3,7 +3,8 @@ from ocr.src import Ocr
 
 def main():
     ocr = Ocr()
-    text = ocr.process_image("data/fox_easy_printed.png")
+    text = ocr.process_image("data/printed.jpg")
+    # text = ocr.process_image("data/sample.png")
     print(text)
 
 
