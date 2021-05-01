@@ -1,16 +1,16 @@
 import numpy as np
 import cv2
-import math
 
-from .util import THRESHOLD, show_image
+THRESHOLD = 2
 
 
 class GrayscaleConverter:
     def __init__(self):
         self.image = None
         self.gray_levels = [0] * THRESHOLD
+        self.threshold = 0
 
-        self.create_lookup_table(THRESHOLD)
+        self.create_lookup_table()
 
     def process_image(self, image):
         self.image = image
@@ -21,7 +21,8 @@ class GrayscaleConverter:
     def to_gray_scale(self):
         gray_trans = np.array([[[0.07, 0.72, 0.21]]])
         gray_image = cv2.convertScaleAbs(np.sum(self.image * gray_trans, axis=2))
-        show_image("Gray", gray_image)
+
+        self.threshold = np.mean(gray_image) - 33
 
         return gray_image
 
@@ -36,23 +37,20 @@ class GrayscaleConverter:
 
         return binarized_image
 
-    def create_lookup_table(self, threshold):
-        step = math.floor(255 / (threshold - 1))
-
-        for x in range(0, threshold):
+    def create_lookup_table(self):
+        """
+        for x in range(0, THRESHOLD):
             threshold_value = step * x
             if threshold_value > 255:
                 self.gray_levels[x] = 255
             else:
                 self.gray_levels[x] = threshold_value
+        """
+        self.gray_levels[0] = 0
+        self.gray_levels[1] = 255
 
     def lookup_gray(self, original_gray):
-        index = 0
-
-        for threshold_index in range(1, len(self.gray_levels)):
-            if original_gray >= self.gray_levels[threshold_index]:
-                index = index + 1
-            else:
-                break
-
-        return self.gray_levels[index]
+        if self.threshold > original_gray:
+            return 0
+        else:
+            return 255
