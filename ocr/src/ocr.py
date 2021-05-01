@@ -1,15 +1,17 @@
 import cv2
 
 from .character_detector import CharacterDetector
+from .character_recognition import CharacterRecognizing
+from .config import get_config
 from .grayscale_converter import GrayscaleConverter
 from .image_filter import ImageFilter
 from .util import show_image, save_image
-from .character_recognition import CharacterRecognizing
 
 grayscale_converter = GrayscaleConverter()
 image_filter = ImageFilter()
 character_detector = CharacterDetector()
 character_recognizing = CharacterRecognizing()
+SHOW_IMAGES = get_config("DEBUG", "Image") == "YES"
 
 
 class Ocr:
@@ -18,10 +20,12 @@ class Ocr:
 
     def preprocess_image(self):
         grayscale_image = grayscale_converter.process_image(self.image)
-        show_image("Grayscale image", grayscale_image)
+        if SHOW_IMAGES:
+            show_image("Grayscale image", grayscale_image)
 
         filtered_image = image_filter.filter_image(grayscale_image)
-        show_image("Filtered image", filtered_image)
+        if SHOW_IMAGES:
+            show_image("Filtered image", filtered_image)
 
         return filtered_image
 

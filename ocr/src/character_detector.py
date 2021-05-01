@@ -1,13 +1,14 @@
-import numpy as np
 import cv2
+import numpy as np
 from matplotlib import pyplot as plt
 
-from .character import Character
 from .Walsh import Walsh
+from .character import Character
 from .config import get_config
-from .util import save_image
+from .util import save_image, show_image
 
 SHOW_HISTOGRAMS = get_config("DEBUG", "Plot") == "YES"
+SHOW_IMAGES = get_config("DEBUG", "Image") == "YES"
 walsh = Walsh()
 
 
@@ -218,9 +219,9 @@ class CharacterDetector:
             color = (0, 255, 0)
             thickness = 1
             image_with_rectangles = cv2.rectangle(image_with_rectangles, start_point, end_point, color, thickness)
-        cv2.imshow("Characters", image_with_rectangles)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+
+        if SHOW_IMAGES:
+            show_image("Characters", image_with_rectangles)
 
         save_image("detectedCharacters", image_with_rectangles)
 
