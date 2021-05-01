@@ -183,7 +183,7 @@ class WordDetector:
             end_point = (words[i].x + width, words[i].y + height)
 
             color = (0, 255, 0)
-            thickness = 2
+            thickness = 1
             image_with_rectangles = cv2.rectangle(image_with_rectangles, start_point, end_point, color, thickness)
         cv2.imshow("Words", image_with_rectangles)
         cv2.waitKey(0)
