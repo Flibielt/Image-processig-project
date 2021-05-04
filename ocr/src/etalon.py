@@ -17,6 +17,7 @@ def create_etalon_text():
 
     for i in range(0, 10):
         etalon_text = etalon_text + str(i)
+    etalon_text = etalon_text + ".,-?!()/"
 
     return etalon_text
 
